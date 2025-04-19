@@ -36,7 +36,7 @@ class Simulation:
 
         # Time integration
         self.t_end = t_end
-        self.dt_min = 0.001
+        self.dt_min = 0.01
 
         # Computational stability
         self.courant_factor = courant_factor

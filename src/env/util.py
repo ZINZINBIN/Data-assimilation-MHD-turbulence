@@ -54,7 +54,7 @@ def generate_comparison_gif(record:List, record_filtered:List, savedir:str, file
     filepath = os.path.join(savedir, filename)
     os.makedirs(savedir, exist_ok=True)
 
-    T = len(record)
+    T = min(len(record), len(record_filtered))
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 4), facecolor="white")
     axes = axes.ravel()

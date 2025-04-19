@@ -10,13 +10,13 @@ def parsing():
 
     # Simulator setup
     parser.add_argument("--num_mesh", type=int, default=50)
-    parser.add_argument("--t_end", type=float, default=0.5)
-    parser.add_argument("--L", type=float, default=10.0)
+    parser.add_argument("--t_end", type=float, default=1.0)
+    parser.add_argument("--L", type=float, default=50.0)
     parser.add_argument("--courant_factor", type=float, default=0.1)
     parser.add_argument("--slopelimit", type=bool, default=True)
     parser.add_argument("--use_animation", type=bool, default=False)
-    parser.add_argument("--verbose", type=int, default=1)
-    parser.add_argument("--plot_freq", type=int, default=20)
+    parser.add_argument("--verbose", type=int, default=10)
+    parser.add_argument("--plot_freq", type=int, default=5)
     parser.add_argument("--plot_all", type=bool, default=False)
     parser.add_argument("--savedir", type=str, default="./results/")
 
