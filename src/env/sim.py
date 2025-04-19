@@ -26,6 +26,7 @@ class Simulation:
         savedir: Optional[str] = "./results/",
         plot_freq: Optional[int] = 16,
         courant_factor: float = 0.5,
+        plot_all:bool = False
     ):
         # Grid configuration
         self.nx = nx
@@ -35,7 +36,7 @@ class Simulation:
 
         # Time integration
         self.t_end = t_end
-        self.dt_min = 0.01
+        self.dt_min = 0.001
 
         # Computational stability
         self.courant_factor = courant_factor
@@ -46,6 +47,7 @@ class Simulation:
         self.savedir = savedir
         self.animation = animation
         self.plot_freq = plot_freq
+        self.plot_all = plot_all
 
         # Physical variables
         self.rho = np.zeros((nx, ny), dtype=np.float32)
@@ -76,12 +78,21 @@ class Simulation:
         self.MEt = []
         self.dEt = []
         self.ts = []
-        self.divB = []
+        self.divBs = []
 
         # Record of MHD density distribution
         self.record = []
 
         self.set_init_condition()
+        
+    def clear(self):
+        self.Et.clear()
+        self.KEt.clear()
+        self.MEt.clear()
+        self.dEt.clear()
+        self.ts.clear()
+        self.divBs.clear()
+        self.record.clear()
 
     def set_init_condition(self):
 
@@ -214,6 +225,136 @@ class Simulation:
 
         return Ez, bx, by
 
+    def update(
+        self, 
+        rho:Optional[np.ndarray]= None,
+        vx:Optional[np.ndarray] = None,
+        vy:Optional[np.ndarray] = None,
+        P:Optional[np.ndarray]  = None,
+        Bx:Optional[np.ndarray] = None,
+        By:Optional[np.ndarray] = None,
+        Ez:Optional[np.ndarray] = None,
+        ):
+
+        # Primitive variables
+        if rho is None:
+            rho = self.rho
+        
+        if vx is None:
+            vx = self.vx
+        
+        if vy is None:
+            vy = self.vy
+            
+        if P is None:
+            P = self.P
+        
+        if Bx is None:
+            Bx = self.Bx
+            
+        if By is None:
+            By = self.By
+            
+        if Ez is None:
+            Ez = self.Ez
+        
+        bx = self.Bxh
+        by = self.Byh
+
+        # Conserved variables
+        m = self.m
+        px = self.px
+        py = self.py
+        en = self.en
+
+        # Compute wave velocities
+        vA = self.compute_Alfven_speed(rho, Bx, By)
+        vS = self.compute_sound_speed(rho, P, self.gamma)
+        vF = self.compute_fast_magnetosonic_speed(vS, vA)
+
+        # time difference based on CFL condition
+        dt = self.courant_factor * np.min(self.dx / (vF + np.sqrt(vx**2 + vy**2)))
+
+        if dt > self.dt_min:
+            dt = self.dt_min
+
+        self.dt = dt
+
+        # compute gradients of variables
+        rho_dx, rho_dy = compute_gradient(rho, self.dx)
+        vx_dx, vx_dy = compute_gradient(vx, self.dx)
+        vy_dx, vy_dy = compute_gradient(vy, self.dx)
+        Bx_dx, Bx_dy = compute_gradient(Bx, self.dx)
+        By_dx, By_dy = compute_gradient(By, self.dx)
+        P_dx, P_dy = compute_gradient(P, self.dx)
+
+        # Slopelimit to handle discontinuity
+        if self.slopelimit:
+            rho_dx, rho_dy = slopelimit(rho, rho_dx, rho_dy, self.dx)
+            vx_dx, vx_dy = slopelimit(vx, vx_dx, vx_dy, self.dx)
+            vy_dx, vy_dy = slopelimit(vy, vy_dx, vy_dy, self.dx)
+            Bx_dx, Bx_dy = slopelimit(Bx, Bx_dx, Bx_dy, self.dx)
+            By_dx, By_dy = slopelimit(By, By_dx, By_dy, self.dx)
+            P_dx, P_dy = slopelimit(P, P_dx, P_dy, self.dx)
+
+        # Extrapolation for half-time : this can be improved through high-order time integration method (RK method)
+        rho_h = self.rho - 0.5 * dt * (vx * rho_dx + vx_dx * rho + vy * rho_dy + vy_dy * rho)
+        vx_h = vx - 0.5 * dt * (vx * vx_dx + vy * vx_dy + (1/rho) * P_dx - 1 / 4 / np.pi / rho * By * By_dx + 1 / 4 / np.pi / rho * By * Bx_dy)
+        vy_h = vy - 0.5 * dt * (vy * vy_dy + vx * vy_dx + (1/rho) * P_dy + 1 / 4 / np.pi / rho * Bx * Bx_dy - 1 / 4 / np.pi / rho * Bx * By_dx)
+        Bx_h = Bx - 0.5 * dt * (-By * vx_dy + Bx * vy_dy + vy * Bx_dy - vx * By_dy)
+        By_h = By - 0.5 * dt * (By * vx_dx - Bx * vy_dx - vy * Bx_dx + vx * By_dx)
+        P_h = P - 0.5 * dt * (self.gamma * P * (vx_dx + vy_dy) + vx * P_dx + vy * P_dy)
+
+        rho_xl, rho_xr, rho_yl, rho_yr = extrapolate_space(rho_h, self.dx, rho_dx, rho_dy)
+        vx_xl, vx_xr, vx_yl, vx_yr = extrapolate_space(vx_h, self.dx, vx_dx, vx_dy)
+        vy_xl, vy_xr, vy_yl, vy_yr = extrapolate_space(vy_h, self.dx, vy_dx, vy_dy)
+        Bx_xl, Bx_xr, Bx_yl, Bx_yr = extrapolate_space(Bx_h, self.dx, Bx_dx, Bx_dy) 
+        By_xl, By_xr, By_yl, By_yr = extrapolate_space(By_h, self.dx, By_dx, By_dy)
+        P_xl, P_xr, P_yl, P_yr = extrapolate_space(P_h, self.dx, P_dx, P_dy)
+
+        # compute conservative flux
+        flux_m_x, flux_px_x, flux_py_x, flux_en_x, flux_by_x = self.compute_Rusanov_Flux(rho_xl, rho_xr, vx_xl, vx_xr, vy_xl, vy_xr, P_xl, P_xr, Bx_xl, Bx_xr, By_xl, By_xr)
+        flux_m_y, flux_py_y, flux_px_y, flux_en_y, flux_bx_y = self.compute_Rusanov_Flux(rho_yl, rho_yr, vy_yl, vy_yr, vx_yl, vx_yr, P_yl, P_yr, By_yl, By_yr, Bx_yl, Bx_yr)
+
+        # compute conserved quantities
+        m = compute_conserved_field(m, flux_m_x, flux_m_y, self.dx, dt)
+        px = compute_conserved_field(px, flux_px_x, flux_px_y, self.dx, dt)
+        py = compute_conserved_field(py, flux_py_x, flux_py_y, self.dx, dt)
+        en = compute_conserved_field(en, flux_en_x, flux_en_y, self.dx, dt)
+
+        J = self.compute_current(Bx, By)
+        w = self.compute_vorticity(vx, vy)
+        Pm = self.compute_magnetic_energy(Bx,By)
+
+        Ez, bx, by = self.compute_constrained_transport(bx, by, flux_by_x, flux_bx_y, self.dx, dt)
+        Bx, By = compute_avg_field(bx, by)
+
+        # update variables
+        self.Ez = Ez
+        self.Bxh = bx
+        self.Byh = by
+
+        self.J = J
+        self.w = w
+        self.Pm = Pm
+        self.px = px
+        self.py = py
+        self.m = m
+        self.en = en
+
+        self.vx = px / rho
+        self.vy = py / rho
+        self.rho = m
+        self.P = (self.gamma - 1) * (en - 0.5 * (px**2 + py**2) / rho - 1 / 8 / np.pi * (Bx**2 + By**2))
+        self.Bx = Bx
+        self.By = By
+
+        # check divergence free
+        divB = compute_div(Bx, By, self.dx)
+        self.divB = divB
+
+        return rho, vx, vy, P, Bx, By, Ez
+
     def solve(self):
 
         t = 0
@@ -222,7 +363,8 @@ class Simulation:
         print("======================================================================")
         print("# Constraint Transport Solver: Initialize Orszag-Tang vortex condition")
 
-        self.plot_snapshot("init", t = 0)
+        if self.plot_all:
+            self.plot_snapshot("init", t = 0)
 
         while t < self.t_end:
 
@@ -334,7 +476,7 @@ class Simulation:
 
             # Save trajectories
             self.ts.append(t)
-            self.divB.append(np.mean(np.abs(divB)))
+            self.divBs.append(np.mean(np.abs(divB)))
             self.KEt.append(np.mean(self.compute_kinetic_energy(rho, vx, vy, P, self.gamma)))
             self.MEt.append(np.mean(self.compute_magnetic_energy(Bx, By)))
             self.Et.append(np.mean(self.compute_total_energy(rho,vx,vy,Bx,By,P, self.gamma)))
@@ -350,14 +492,15 @@ class Simulation:
             # break condition
             if t >= self.t_end:
                 break
-
-        self.plot_snapshot(None, t=t)
-        self.plot_energy_evolution()
-        self.plot_div_B()
         
+        if self.plot_all:
+            self.plot_snapshot(None, t=t)
+            self.plot_energy_evolution()
+            self.plot_div_B()
+
         if self.animation:
             generate_contourf_gif(self.record, self.savedir, "density_evolution.gif", r"$\rho (x,y,t)$", xmin = 0, xmax = self.L, plot_freq = self.plot_freq)
-        
+
     def plot_snapshot(self, tag:Optional[str], t:float):
 
         if tag is not None:
@@ -381,7 +524,7 @@ class Simulation:
             plot_contourf(self.Ez, self.savedir, "Ez.png", "$E_z$ at t = {:.3f}".format(t), dpi = 160)
             plot_contourf(self.w, self.savedir, "vorticity.png", r"$\nabla \times v(x,y)$ at t = {:.3f}".format(t), dpi = 160)
             plot_contourf(self.J, self.savedir, "current.png", "$J(x,y)$ at t = {:.3f}".format(t), dpi = 160)
-        
+
     def plot_energy_evolution(self):
         # plot the energy dissipation
         plt.figure(figsize=(5, 4))
@@ -397,7 +540,7 @@ class Simulation:
 
     def plot_div_B(self):
         plt.figure(figsize=(5, 4))
-        plt.plot(self.ts, self.divB, "r-", label="Total")
+        plt.plot(self.ts, self.divBs, "r-", label="Total")
         plt.xlabel("t")
         plt.ylabel(r"$|\nabla \cdot B|$")
         plt.title(r"$|\nabla \cdot B|$")

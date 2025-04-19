@@ -35,7 +35,7 @@ class EnsembleKalmanFilter:
         self.K = np.zeros((xdim, zdim), dtype = np.float32) # Kalman gain matrix
         self.S = np.zeros((zdim, zdim), dtype = np.float32) # Innovation covariance
 
-        self.ensemble_x = multivariate_normal(mean = x.ravel(), cov = P, size = N).T # (xdim, N)
+        self.ensemble_x = multivariate_normal(mean = x.ravel(), cov = self.P, size = N).T # (xdim, N)
         self.ensemble_z = np.zeros((zdim, N), dtype = np.float32)            # (zdim, N)
 
         self._mean_x = np.zeros(xdim)
@@ -73,7 +73,7 @@ class EnsembleKalmanFilter:
             self.ensemble_x[:,idx] = self.fx(self.ensemble_x[:,idx]).ravel()
 
         self.ensemble_x += err_x
-        self.x = np.mean(self.ensemble_x, axis = 1)
+        self.x = np.mean(self.ensemble_x, axis = 1, keepdims=True)
         
         return self.x
 
