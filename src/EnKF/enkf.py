@@ -34,14 +34,24 @@ class EnsembleKalmanFilter:
 
         self.K = np.zeros((xdim, zdim), dtype = np.float32) # Kalman gain matrix
         self.S = np.zeros((zdim, zdim), dtype = np.float32) # Innovation covariance
-
-        self.ensemble_x = multivariate_normal(mean = x.ravel(), cov = self.P, size = N).T # (xdim, N)
+        
+        self.ensemble_x = self.compute_diag_mvn_sample(x.reshape(-1,1), diag_cov=self.P, size = N)
+        # self.ensemble_x = x.reshape(-1,1).repeat(N, axis = 1)    
         self.ensemble_z = np.zeros((zdim, N), dtype = np.float32)            # (zdim, N)
 
         self._mean_x = np.zeros(xdim)
         self._mean_z = np.zeros(zdim)
+        
+    def compute_diag_mvn_sample(self, mean:np.ndarray, diag_cov:np.ndarray, size:int):
+        std_dev = np.sqrt(diag_cov)
+        z = np.random.randn(mean.shape[0], size)
+        return mean + std_dev @ z
 
-    def update(self, z:np.ndarray):
+    def update(self, z:Optional[np.ndarray]):
+        
+        if z is None:
+            self.z = None
+            return
 
         for idx in range(self.N):
             self.ensemble_z[:,idx] = (self.H @ self.ensemble_x[:,idx].reshape(-1,1)).ravel()
@@ -51,27 +61,27 @@ class EnsembleKalmanFilter:
 
         A = self.ensemble_x - self.x.reshape(-1,1)
         HA = self.ensemble_z - z_mean.reshape(-1,1)
-
+        
         self.Pzz = 1 / (self.N - 1) * HA@HA.T + self.R
         self.Pxz = 1 / (self.N - 1) * A@HA.T
 
         self.S = self.Pzz
         self.K = self.Pxz @ np.linalg.inv(self.S)
 
-        err_z = multivariate_normal(mean =self._mean_z, cov = self.R, size=self.N).T
+        err_z = self.compute_diag_mvn_sample(self._mean_z.reshape(-1,1), self.R, self.N)
         
         D = np.concatenate([self.z for _ in range(self.N)], axis = 1) + err_z
         Xp = self.ensemble_x + self.K@(D - self.ensemble_z)
-
+        
         self.x = np.mean(Xp, axis = 1)
         self.P = self.P - self.K@self.S@self.K.T
 
     def predict(self):
-        err_x = multivariate_normal(mean=self._mean_x, cov=self.Q, size=self.N).T
+        err_x = self.compute_diag_mvn_sample(self._mean_x.reshape(-1,1), self.Q, self.N)
 
         for idx in range(self.N):
             self.ensemble_x[:,idx] = self.fx(self.ensemble_x[:,idx]).ravel()
-
+            
         self.ensemble_x += err_x
         self.x = np.mean(self.ensemble_x, axis = 1, keepdims=True)
         
@@ -94,7 +104,7 @@ if __name__ == "__main__":
     R = np.eye(1) * sig_z**2
     B = np.array([0.5 * dt**2, dt]).reshape(-1, 1)
 
-    x0 = np.array([0, 4]).reshape(-1, 1)
+    x0 = np.array([0.0, 4.0]).reshape(-1, 1)
     y_true = 0
 
     traj_estimate = []
@@ -132,4 +142,4 @@ if __name__ == "__main__":
     plt.plot(measurements, label="Measurements")
     plt.plot(predictions[:, 0], label="EnKF Prediction")
     plt.legend()
-    plt.savefig("./result/test_enkf.png")
+    plt.savefig("./results/test_enkf.png")

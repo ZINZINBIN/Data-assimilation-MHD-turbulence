@@ -4,6 +4,11 @@ This is a github repostory for the research project "Data assimilation for Orsza
 
 ## Background
 ### MHD and Orszag-Tnag MHD vortex
+<div>
+    <p float = 'left'>
+        <img src="/results/simulation/density_evolution.gif"  width="50%">
+    </p>
+</div>
 
 ### Ensemble Kalman Filter
 
@@ -11,3 +16,8 @@ This is a github repostory for the research project "Data assimilation for Orsza
 ### Methodolgoies
 
 ### Numerical results
+<div>
+    <p float = 'left'>
+        <img src="/results/density_evolution_comparison.gif"  width="100%">
+    </p>
+</div>

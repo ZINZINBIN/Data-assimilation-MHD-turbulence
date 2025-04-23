@@ -10,7 +10,7 @@ from src.env.compute import (
     compute_curl_z, 
     compute_div
 )
-from src.env.slope import slopelimit
+from src.env.slope import slopelimit, smoothing
 from src.env.util import plot_contourf, generate_contourf_gif
 
 class Simulation:
@@ -26,7 +26,8 @@ class Simulation:
         savedir: Optional[str] = "./results/",
         plot_freq: Optional[int] = 16,
         courant_factor: float = 0.5,
-        plot_all:bool = False
+        plot_all:bool = False,
+        use_smooth:bool = False,
     ):
         # Grid configuration
         self.nx = nx
@@ -41,6 +42,7 @@ class Simulation:
         # Computational stability
         self.courant_factor = courant_factor
         self.slopelimit = slopelimit
+        self.use_smooth = use_smooth
 
         # Figure setting
         self.verbose = verbose
@@ -84,7 +86,7 @@ class Simulation:
         self.record = []
 
         self.set_init_condition()
-        
+
     def clear(self):
         self.Et.clear()
         self.KEt.clear()
@@ -234,30 +236,46 @@ class Simulation:
         Bx:Optional[np.ndarray] = None,
         By:Optional[np.ndarray] = None,
         Ez:Optional[np.ndarray] = None,
+        dt:Optional[float] = None,
+        update_params:bool = False,
         ):
 
         # Primitive variables
         if rho is None:
             rho = self.rho
-        
+
         if vx is None:
             vx = self.vx
-        
+
         if vy is None:
             vy = self.vy
-            
+
         if P is None:
             P = self.P
-        
+
         if Bx is None:
             Bx = self.Bx
-            
+
         if By is None:
             By = self.By
-            
+
         if Ez is None:
             Ez = self.Ez
-        
+
+        # Check invalid values
+        rho = np.maximum(rho, 1e-8)
+        P = np.maximum(P, 1e-8)
+
+        # Smoothing
+        if self.use_smooth:
+            rho = smoothing(rho)
+            vx = smoothing(vx)
+            vy = smoothing(vy)
+            P = smoothing(P)
+            Bx = smoothing(Bx)
+            By = smoothing(By)
+            Ez = smoothing(Ez)
+
         bx = self.Bxh
         by = self.Byh
 
@@ -273,10 +291,11 @@ class Simulation:
         vF = self.compute_fast_magnetosonic_speed(vS, vA)
 
         # time difference based on CFL condition
-        dt = self.courant_factor * np.min(self.dx / (vF + np.sqrt(vx**2 + vy**2)))
+        if dt is None:
+            dt = self.courant_factor * np.min(self.dx / (vF + np.sqrt(vx**2 + vy**2)))
 
-        if dt > self.dt_min:
-            dt = self.dt_min
+            if dt > self.dt_min:
+                dt = self.dt_min
 
         self.dt = dt
 
@@ -329,29 +348,31 @@ class Simulation:
         Ez, bx, by = self.compute_constrained_transport(bx, by, flux_by_x, flux_bx_y, self.dx, dt)
         Bx, By = compute_avg_field(bx, by)
 
-        # update variables
-        self.Ez = Ez
-        self.Bxh = bx
-        self.Byh = by
-
-        self.J = J
-        self.w = w
-        self.Pm = Pm
-        self.px = px
-        self.py = py
-        self.m = m
-        self.en = en
-
-        self.vx = px / rho
-        self.vy = py / rho
-        self.rho = m
-        self.P = (self.gamma - 1) * (en - 0.5 * (px**2 + py**2) / rho - 1 / 8 / np.pi * (Bx**2 + By**2))
-        self.Bx = Bx
-        self.By = By
-
         # check divergence free
         divB = compute_div(Bx, By, self.dx)
-        self.divB = divB
+
+        # update variables
+        if update_params:
+            self.Ez = Ez
+            self.Bxh = bx
+            self.Byh = by
+
+            self.J = J
+            self.w = w
+            self.Pm = Pm
+            self.px = px
+            self.py = py
+            self.m = np.maximum(m, 1e-8)
+            self.en = en
+
+            self.vx = px / rho
+            self.vy = py / rho
+            self.rho = np.maximum(m, 1e-8)
+            self.P = np.maximum((self.gamma - 1) * (en - 0.5 * (px**2 + py**2) / rho - 1 / 8 / np.pi * (Bx**2 + By**2)), 1e-8)
+            self.Bx = Bx
+            self.By = By
+
+            self.divB = divB
 
         return rho, vx, vy, P, Bx, By, Ez
 
@@ -386,6 +407,20 @@ class Simulation:
             px = self.px
             py = self.py
             en = self.en
+
+            # Check invalid values
+            rho = np.maximum(rho, 1e-8)
+            P = np.maximum(P, 1e-8)
+
+            # Smoothing
+            if self.use_smooth:
+                rho = smoothing(rho)
+                vx = smoothing(vx)
+                vy = smoothing(vy)
+                P = smoothing(P)
+                Bx = smoothing(Bx)
+                By = smoothing(By)
+                Ez = smoothing(Ez)
 
             # Compute wave velocities
             vA = self.compute_Alfven_speed(rho, Bx, By)
@@ -457,13 +492,13 @@ class Simulation:
             self.Pm = Pm
             self.px = px
             self.py = py
-            self.m = m
+            self.m = np.maximum(m, 1e-8)
             self.en = en
 
             self.vx = px / rho
             self.vy = py / rho
-            self.rho = m
-            self.P = (self.gamma - 1) * (en - 0.5 * (px**2 + py**2) / rho - 1 / 8 / np.pi * (Bx**2 + By**2))
+            self.rho = np.maximum(m, 1e-8)
+            self.P = np.maximum((self.gamma - 1) * (en - 0.5 * (px**2 + py**2) / rho - 1 / 8 / np.pi * (Bx**2 + By**2)), 1e-8)
             self.Bx = Bx
             self.By = By
 
@@ -487,12 +522,13 @@ class Simulation:
                         t, np.mean(np.abs(divB)), np.mean(self.en), np.mean(P), np.mean(self.rho)
                     )
                 )
-                self.record.append(rho)
+
+            self.record.append(rho)
 
             # break condition
             if t >= self.t_end:
                 break
-        
+
         if self.plot_all:
             self.plot_snapshot(None, t=t)
             self.plot_energy_evolution()

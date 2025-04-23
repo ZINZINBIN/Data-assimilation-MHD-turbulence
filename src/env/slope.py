@@ -19,3 +19,14 @@ def slopelimit(f:np.ndarray, fx:np.ndarray, fy:np.ndarray, dx:float):
     f_dy = constraint_slope(f, fy, dx, axis = 1, direction = L)
     f_dy = constraint_slope(f, f_dy, dx, axis = 1, direction = R)
     return f_dx, f_dy
+
+def smoothing(f:np.ndarray):
+    R = -1
+    L = 1
+    fxr = np.roll(f, R, axis=0)
+    fxl = np.roll(f, L, axis=0)
+    fyr = np.roll(f, R, axis=1)
+    fyl = np.roll(f, L, axis=1)
+    
+    f_smooth = 0.15 * (fxr + fxl + fyr + fyl) + 0.4 * f
+    return f_smooth

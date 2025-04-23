@@ -56,7 +56,7 @@ def generate_comparison_gif(record:List, record_filtered:List, savedir:str, file
 
     T = min(len(record), len(record_filtered))
 
-    fig, axes = plt.subplots(1, 2, figsize=(10, 4), facecolor="white")
+    fig, axes = plt.subplots(1, 2, figsize=(8, 4), facecolor="white")
     axes = axes.ravel()
 
     axes[0].cla()
@@ -84,7 +84,7 @@ def generate_comparison_gif(record:List, record_filtered:List, savedir:str, file
         
         fig.tight_layout()
 
-    ani = animation.FuncAnimation(fig, _update, frames=T, interval = 1000// plot_freq, blit=False)
+    ani = animation.FuncAnimation(fig, _update, frames=T, blit=False)
 
     # Save animation
     ani.save(filepath, writer=animation.PillowWriter(fps=plot_freq, bitrate = False))

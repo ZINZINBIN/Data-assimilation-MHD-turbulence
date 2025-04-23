@@ -98,4 +98,4 @@ if __name__ == "__main__":
     plt.plot(measurements, label = 'Measurements')
     plt.plot(predictions[:,0], label = 'Kalman Filter Prediction')
     plt.legend()
-    plt.savefig("./result/test_kf.png")
+    plt.savefig("./results/test_kf.png")
