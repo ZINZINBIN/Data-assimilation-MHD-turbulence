@@ -142,4 +142,4 @@ if __name__ == "__main__":
     plt.plot(measurements, label="Measurements")
     plt.plot(predictions[:, 0], label="EnKF Prediction")
     plt.legend()
-    plt.savefig("./results/test_enkf.png")
+    plt.savefig("./results/test/test_enkf.png")

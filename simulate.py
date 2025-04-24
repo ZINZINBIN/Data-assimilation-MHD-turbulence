@@ -1,4 +1,4 @@
-import argparse
+import argparse, os
 import numpy as np
 from src.env.sim import Simulation
 
@@ -22,6 +22,10 @@ def parsing():
 if __name__ == "__main__":
 
     args = parsing()
+    
+    if not os.path.exists(args['savedir']):
+        os.mkdir(args['savedir'])
+        
     sim = Simulation(
         nx=args["num_mesh"],
         ny=args["num_mesh"],

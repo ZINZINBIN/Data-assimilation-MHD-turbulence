@@ -84,6 +84,14 @@ class Simulation:
 
         # Record of MHD density distribution
         self.record = []
+        
+        # Record primitive variables
+        self.record_rho = []
+        self.record_P = []
+        self.record_Bx = []
+        self.record_By = []
+        self.record_vx = []
+        self.record_vy = []
 
         self.set_init_condition()
 
@@ -350,7 +358,9 @@ class Simulation:
 
         # check divergence free
         divB = compute_div(Bx, By, self.dx)
-
+        
+        P = np.maximum((self.gamma - 1) * (en - 0.5 * (px**2 + py**2) / rho - 1 / 8 / np.pi * (Bx**2 + By**2)), 1e-8)
+        
         # update variables
         if update_params:
             self.Ez = Ez
@@ -524,6 +534,13 @@ class Simulation:
                 )
 
             self.record.append(rho)
+            
+            self.record_rho.append(rho)
+            self.record_vx.append(vx)
+            self.record_vy.append(vy)
+            self.record_P.append(P)
+            self.record_Bx.append(Bx)
+            self.record_By.append(By)
 
             # break condition
             if t >= self.t_end:
