@@ -10,7 +10,7 @@ In the 2D periodic system, a supersonic MHD turbulence model problem called the 
 
 <div>
     <p float = 'left'>
-        <img src="/results/simulation/density_evolution.gif"  width="50%">
+        <img src="/image/density_evolution.gif"  width="50%">
     </p>
 </div>
 
@@ -22,7 +22,21 @@ Ensemble Kalman Filter(EnKF) is a Monte Carlo method based Kalman filtering, rep
 
 <div>
     <p float = 'left'>
-        <img src="/results/rho/density_evolution_comparison.gif"  width="100%">
+        <img src="/image/density_evolution_comparison.gif"  width="100%">
+    </p>
+</div>
+
+### Velocity estimation
+
+<div>
+    <p float = 'left'>
+        <img src="/image/vx_evolution_comparison.gif"  width="100%">
+    </p>
+</div>
+
+<div>
+    <p float = 'left'>
+        <img src="/image/vy_evolution_comparison.gif"  width="100%">
     </p>
 </div>
 
@@ -30,13 +44,13 @@ Ensemble Kalman Filter(EnKF) is a Monte Carlo method based Kalman filtering, rep
 
 <div>
     <p float = 'left'>
-        <img src="/results/B/Bx_evolution_comparison.gif"  width="100%">
+        <img src="/image/Bx_evolution_comparison.gif"  width="100%">
     </p>
 </div>
 
 <div>
     <p float = 'left'>
-        <img src="/results/B/By_evolution_comparison.gif"  width="100%">
+        <img src="/image/By_evolution_comparison.gif"  width="100%">
     </p>
 </div>
 
@@ -44,6 +58,6 @@ Ensemble Kalman Filter(EnKF) is a Monte Carlo method based Kalman filtering, rep
 
 <div>
     <p float = 'left'>
-        <img src="/results/P/pressure_evolution_comparison.gif"  width="100%">
+        <img src="/image/pressure_evolution_comparison.gif"  width="100%">
     </p>
 </div>

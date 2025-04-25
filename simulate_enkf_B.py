@@ -34,8 +34,18 @@ if __name__ == "__main__":
 
     args = parsing()
 
-    if not os.path.exists(args['savedir']):
-        os.mkdir(args['savedir'])
+    savepath = os.path.join(
+        args["savedir"],
+        "np_{}_ne_{}_sx_{}_sz_{}".format(
+            args["num_data_point"],
+            args["num_ensemble"],
+            args["sigma_x"],
+            args["sigma_z"],
+        ),
+    )
+
+    if not os.path.exists(savepath):
+        os.makedirs(savepath)
 
     sim_gt = Simulation(
         nx=args["num_mesh"],
@@ -161,14 +171,14 @@ if __name__ == "__main__":
         if count % args['verbose'] == 0:
             print("t = {:.3f} | divB = {:.3f} | E = {:.3f} | P = {:.3f} | rho = {:.3f}".format(t, np.mean(np.abs(sim_kf.divB)), np.mean(sim_kf.en), np.mean(sim_kf.P), np.mean(sim_kf.rho)))
 
-    generate_comparison_gif(Bx_measure, Bx_estimate, args['savedir'], "Bx_evolution_comparison.gif", None, args['plot_freq'])
-    generate_comparison_gif(By_measure, By_estimate, args['savedir'], "By_evolution_comparison.gif", None, args['plot_freq'])
+    generate_comparison_gif(Bx_measure, Bx_estimate, savepath, "Bx_evolution_comparison.gif", None, args['plot_freq'])
+    generate_comparison_gif(By_measure, By_estimate, savepath, "By_evolution_comparison.gif", None, args['plot_freq'])
 
-    generate_contourf_gif(Bx_measure,args['savedir'], "Bx_evolution_original.gif", r"$B_x (x,y)$", 0, args['L'], args['plot_freq'])
-    generate_contourf_gif(By_measure,args['savedir'], "By_evolution_original.gif", r"$B_y (x,y)$", 0, args['L'], args['plot_freq'])
+    generate_contourf_gif(Bx_measure, savepath, "Bx_evolution_original.gif", r"$B_x (x,y)$", 0, args['L'], args['plot_freq'])
+    generate_contourf_gif(By_measure, savepath, "By_evolution_original.gif", r"$B_y (x,y)$", 0, args['L'], args['plot_freq'])
 
-    generate_contourf_gif(Bx_estimate,args['savedir'], "Bx_evolution_estimate.gif", r"$B_x (x,y)$", 0, args['L'], args['plot_freq'])
-    generate_contourf_gif(By_estimate,args['savedir'], "By_evolution_estimate.gif", r"$B_y (x,y)$", 0, args['L'], args['plot_freq'])
+    generate_contourf_gif(Bx_estimate,savepath, "Bx_evolution_estimate.gif", r"$B_x (x,y)$", 0, args['L'], args['plot_freq'])
+    generate_contourf_gif(By_estimate,savepath, "By_evolution_estimate.gif", r"$B_y (x,y)$", 0, args['L'], args['plot_freq'])
 
     Bx_l2_err_t = [compute_l2_norm(Bx_measure[i], Bx_estimate[i]) for i in range(len(Bx_measure))]
     By_l2_err_t = [compute_l2_norm(By_measure[i], By_estimate[i]) for i in range(len(By_measure))]
@@ -183,4 +193,4 @@ if __name__ == "__main__":
     ax.set_title(r"L2 error with $B(x,y)$ estimation")
 
     fig.tight_layout()
-    fig.savefig("./results/B/enkf_B_error.png")
+    fig.savefig(os.path.join(savepath, "enkf_B_error.png"))

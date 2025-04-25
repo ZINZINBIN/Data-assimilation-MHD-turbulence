@@ -34,8 +34,18 @@ if __name__ == "__main__":
 
     args = parsing()
 
-    if not os.path.exists(args['savedir']):
-        os.mkdir(args['savedir'])
+    savepath = os.path.join(
+        args["savedir"],
+        "np_{}_ne_{}_sx_{}_sz_{}".format(
+            args["num_data_point"],
+            args["num_ensemble"],
+            args["sigma_x"],
+            args["sigma_z"],
+        ),
+    )
+
+    if not os.path.exists(savepath):
+        os.makedirs(savepath)
 
     sim_gt = Simulation(
         nx=args["num_mesh"],
@@ -141,9 +151,9 @@ if __name__ == "__main__":
         if count % args['verbose'] == 0:
             print("t = {:.3f} | divB = {:.3f} | E = {:.3f} | P = {:.3f} | rho = {:.3f}".format(t, np.mean(np.abs(sim_kf.divB)), np.mean(sim_kf.en), np.mean(sim_kf.P), np.mean(sim_kf.rho)))
 
-    generate_comparison_gif(rho_measure, rho_estimate, args['savedir'], "density_evolution_comparison.gif", None, args['plot_freq'])
-    generate_contourf_gif(rho_measure,args['savedir'], "density_evolution_original.gif", r"$\rho (x,y)$", 0, args['L'], args['plot_freq'])
-    generate_contourf_gif(rho_estimate,args['savedir'], "density_evolution_estimate.gif", r"$\rho (x,y)$", 0, args['L'], args['plot_freq'])
+    generate_comparison_gif(rho_measure, rho_estimate, savepath, "density_evolution_comparison.gif", None, args['plot_freq'])
+    generate_contourf_gif(rho_measure,  savepath, "density_evolution_original.gif", r"$\rho (x,y)$", 0, args['L'], args['plot_freq'])
+    generate_contourf_gif(rho_estimate, savepath, "density_evolution_estimate.gif", r"$\rho (x,y)$", 0, args['L'], args['plot_freq'])
 
     l2_err_t = [compute_l2_norm(rho_measure[i], rho_estimate[i]) for i in range(len(rho_measure))]
 
@@ -156,4 +166,4 @@ if __name__ == "__main__":
     ax.set_title(r"L2 error with $\rho$ estimation")
 
     fig.tight_layout()
-    fig.savefig("./results/rho/enkf_density_error.png")
+    fig.savefig(os.path.join(savepath, "enkf_density_error.png"))

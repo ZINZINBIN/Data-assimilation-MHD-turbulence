@@ -34,8 +34,18 @@ if __name__ == "__main__":
 
     args = parsing()
 
-    if not os.path.exists(args['savedir']):
-        os.mkdir(args['savedir'])
+    savepath = os.path.join(
+        args["savedir"],
+        "np_{}_ne_{}_sx_{}_sz_{}".format(
+            args["num_data_point"],
+            args["num_ensemble"],
+            args["sigma_x"],
+            args["sigma_z"],
+        ),
+    )
+
+    if not os.path.exists(savepath):
+        os.makedirs(savepath)
 
     sim_gt = Simulation(
         nx=args["num_mesh"],
@@ -141,9 +151,9 @@ if __name__ == "__main__":
         if count % args['verbose'] == 0:
             print("t = {:.3f} | divB = {:.3f} | E = {:.3f} | P = {:.3f} | rho = {:.3f}".format(t, np.mean(np.abs(sim_kf.divB)), np.mean(sim_kf.en), np.mean(sim_kf.P), np.mean(sim_kf.rho)))
 
-    generate_comparison_gif(P_measure, P_estimate, args['savedir'], "pressure_evolution_comparison.gif", None, args['plot_freq'])
-    generate_contourf_gif(P_measure,args['savedir'], "pressure_evolution_original.gif", r"$P(x,y)$", 0, args['L'], args['plot_freq'])
-    generate_contourf_gif(P_estimate,args['savedir'], "pressure_evolution_estimate.gif", r"$P(x,y)$", 0, args['L'], args['plot_freq'])
+    generate_comparison_gif(P_measure, P_estimate, savepath, "pressure_evolution_comparison.gif", None, args['plot_freq'])
+    generate_contourf_gif(P_measure,  savepath, "pressure_evolution_original.gif", r"$P(x,y)$", 0, args['L'], args['plot_freq'])
+    generate_contourf_gif(P_estimate, savepath, "pressure_evolution_estimate.gif", r"$P(x,y)$", 0, args['L'], args['plot_freq'])
 
     l2_err_t = [compute_l2_norm(P_measure[i], P_estimate[i]) for i in range(len(P_measure))]
 
@@ -156,4 +166,4 @@ if __name__ == "__main__":
     ax.set_title(r"L2 error with $P$ estimation")
 
     fig.tight_layout()
-    fig.savefig("./results/P/enkf_pressure_error.png")
+    fig.savefig(os.path.join(savepath, "enkf_pressure_error.png"))
