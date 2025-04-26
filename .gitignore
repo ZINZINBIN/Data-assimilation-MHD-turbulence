@@ -1,2 +1,6 @@
 # numerical results
-# results/*
+results/*
+
+# .npy file
+*.npy
+*.mat

@@ -194,3 +194,34 @@ if __name__ == "__main__":
 
     fig.tight_layout()
     fig.savefig(os.path.join(savepath, "enkf_B_error.png"))
+
+    try:
+        datapath = os.path.join(
+            "data/B",
+            "np_{}_ne_{}_sx_{}_sz_{}".format(
+                args["num_data_point"],
+                args["num_ensemble"],
+                args["sigma_x"],
+                args["sigma_z"],
+            ),
+        )
+
+        if not os.path.exists(datapath):
+            os.makedirs(datapath)
+
+        t_estimate = np.array(t_estimate)
+        Bx_estimate = np.stack(Bx_estimate, axis=2)
+        By_estimate = np.stack(By_estimate, axis=2)
+
+        Bx_measure = np.stack(Bx_measure, axis=2)
+        By_measure = np.stack(By_measure, axis=2)
+
+        np.save(os.path.join(datapath, "t_estimate.npy"), t_estimate)
+        np.save(os.path.join(datapath, "Bx_estimate.npy"), Bx_estimate)
+        np.save(os.path.join(datapath, "By_estimate.npy"), By_estimate)
+
+        np.save(os.path.join(datapath, "Bx_measure.npy"), Bx_measure)
+        np.save(os.path.join(datapath, "By_measure.npy"), By_measure)
+
+    except:
+        print("NaN or invalid value contained in EnKF with B-field simulation")

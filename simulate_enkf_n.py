@@ -11,7 +11,7 @@ def parsing():
 
     # Simulator setup
     parser.add_argument("--num_mesh", type=int, default=50)
-    parser.add_argument("--t_end", type=float, default=0.5)
+    parser.add_argument("--t_end", type=float, default=0.1)
     parser.add_argument("--L", type=float, default=1.0)
     parser.add_argument("--courant_factor", type=float, default=0.25)
     parser.add_argument("--slopelimit", type=bool, default=True)
@@ -137,9 +137,6 @@ if __name__ == "__main__":
         t+= sim_kf.dt
         count += 1
 
-        # if np.mean(sim_kf.P) > 1.0:
-        #     breakpoint()
-
         # save trajectory
         t_estimate.append(t)
         rho_measure.append(x_gt)
@@ -167,3 +164,28 @@ if __name__ == "__main__":
 
     fig.tight_layout()
     fig.savefig(os.path.join(savepath, "enkf_density_error.png"))
+
+    try:
+        datapath = os.path.join(
+            "data/rho",
+            "np_{}_ne_{}_sx_{}_sz_{}".format(
+                args["num_data_point"],
+                args["num_ensemble"],
+                args["sigma_x"],
+                args["sigma_z"],
+            ),
+        )
+        
+        if not os.path.exists(datapath):
+            os.makedirs(datapath)
+        
+        t_estimate = np.array(t_estimate)
+        rho_estimate = np.stack(rho_estimate, axis=2)
+        rho_measure = np.stack(rho_measure, axis=2)
+
+        np.save(os.path.join(datapath, "t_estimate.npy"), t_estimate)
+        np.save(os.path.join(datapath, "density_estimate.npy"), rho_estimate)
+        np.save(os.path.join(datapath, "density_measure.npy"), rho_measure)
+
+    except:
+        print("NaN or invalid value contained in EnKF with density simulation")

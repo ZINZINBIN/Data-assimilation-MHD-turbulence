@@ -193,3 +193,34 @@ if __name__ == "__main__":
 
     fig.tight_layout()
     fig.savefig(os.path.join(savepath, "enkf_v_error.png"))
+
+    try:
+        datapath = os.path.join(
+            "data/v",
+            "np_{}_ne_{}_sx_{}_sz_{}".format(
+                args["num_data_point"],
+                args["num_ensemble"],
+                args["sigma_x"],
+                args["sigma_z"],
+            ),
+        )
+
+        if not os.path.exists(datapath):
+            os.makedirs(datapath)
+
+        t_estimate = np.array(t_estimate)
+        vx_estimate = np.stack(vx_estimate, axis=2)
+        vy_estimate = np.stack(vy_estimate, axis=2)
+
+        vx_measure = np.stack(vx_measure, axis=2)
+        vy_measure = np.stack(vy_measure, axis=2)
+
+        np.save(os.path.join(datapath, "t_estimate.npy"), t_estimate)
+        np.save(os.path.join(datapath, "vx_estimate.npy"), vx_estimate)
+        np.save(os.path.join(datapath, "vy_estimate.npy"), vy_estimate)
+
+        np.save(os.path.join(datapath, "vx_measure.npy"), vx_measure)
+        np.save(os.path.join(datapath, "vy_measure.npy"), vy_measure)
+        
+    except:
+        print("NaN or invalid value contained in EnKF with velocity simulation")
