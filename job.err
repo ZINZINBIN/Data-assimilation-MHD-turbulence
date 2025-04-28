@@ -1,383 +1,111 @@
-/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/sim.py:209: RuntimeWarning: invalid value encountered in sqrt
-  c0_L = np.sqrt(self.gamma*P_L/rho_L)
-/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/sim.py:212: RuntimeWarning: invalid value encountered in sqrt
-  ca_L = np.sqrt((Bx_L**2+By_L**2)/rho_L/4/np.pi)
+srun: Step created for StepId=1971760.4
+srun: Step created for StepId=1971760.5
+srun: Step created for StepId=1971760.6
+srun: Step created for StepId=1971760.7
 /home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/sim.py:210: RuntimeWarning: invalid value encountered in sqrt
   c0_R = np.sqrt(self.gamma*P_R/rho_R)
 /home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/sim.py:213: RuntimeWarning: invalid value encountered in sqrt
   ca_R = np.sqrt((Bx_R**2+By_R**2)/rho_R/4/np.pi)
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_n.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho,r"$\rho(x,y)$",savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.2
-srun: Step created for StepId=1971560.4
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_P.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.1
-srun: Step created for StepId=1971560.5
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_P.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.0
-srun: Step created for StepId=1971560.6
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_P.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.6
-srun: Step created for StepId=1971560.7
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_B.py", line 183, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.3
-srun: Step created for StepId=1971560.8
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_n.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho,r"$\rho(x,y)$",savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.7
-srun: Step created for StepId=1971560.9
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_B.py", line 183, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.4
-srun: Step created for StepId=1971560.10
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_v.py", line 182, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.5
-srun: Step created for StepId=1971560.11
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_n.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho,r"$\rho(x,y)$",savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.9
-srun: Step created for StepId=1971560.12
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_n.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho,r"$\rho(x,y)$",savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.11
-srun: Step created for StepId=1971560.13
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_P.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.12
-srun: Step created for StepId=1971560.14
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_P.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.8
-srun: Step created for StepId=1971560.15
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_B.py", line 183, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.10
-srun: Step created for StepId=1971560.16
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_P.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.15
-srun: Step created for StepId=1971560.17
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_P.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.17
-srun: Step created for StepId=1971560.18
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_B.py", line 183, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.13
-srun: Step created for StepId=1971560.19
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_B.py", line 183, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.14
-srun: Step created for StepId=1971560.20
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_n.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho,r"$\rho(x,y)$",savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.19
-srun: Step created for StepId=1971560.21
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_v.py", line 182, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.18
-srun: Step created for StepId=1971560.22
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_n.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho,r"$\rho(x,y)$",savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.22
-srun: Step created for StepId=1971560.23
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_n.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho,r"$\rho(x,y)$",savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.21
-srun: Step created for StepId=1971560.24
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_P.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.23
-srun: Step created for StepId=1971560.25
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_B.py", line 183, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.20
-srun: Step created for StepId=1971560.26
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_n.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho,r"$\rho(x,y)$",savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.24
-srun: Step created for StepId=1971560.27
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_B.py", line 183, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.16
-srun: Step created for StepId=1971560.28
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_P.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.25
-srun: Step created for StepId=1971560.29
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_P.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.28
-srun: Step created for StepId=1971560.30
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_n.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho,r"$\rho(x,y)$",savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.30
-srun: Step created for StepId=1971560.31
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_v.py", line 182, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.26
-srun: Step created for StepId=1971560.32
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_v.py", line 182, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.27
-srun: Step created for StepId=1971560.33
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_v.py", line 182, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.29
-srun: Step created for StepId=1971560.34
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-srun: Job 1971560 step creation still disabled, retrying (Requested nodes are busy)
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_v.py", line 182, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.33
-srun: Step created for StepId=1971560.35
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_v.py", line 182, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.32
-srun: Step created for StepId=1971560.36
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_v.py", line 182, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.34
-srun: Step created for StepId=1971560.37
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_n.py", line 155, in <module>
-    generate_snapshots(sim_kf.record_rho,r"$\rho(x,y)$",savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.37
-srun: Step created for StepId=1971560.38
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_B.py", line 183, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.31
-srun: Step created for StepId=1971560.39
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_B.py", line 183, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.35
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_v.py", line 182, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.38
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_B.py", line 183, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.39
-Traceback (most recent call last):
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/simulate_enkf_v.py", line 182, in <module>
-    generate_snapshots(sim_kf.record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
-  File "/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/util.py", line 113, in generate_snapshots
-    axes[0].imshow(snapshot_list[0])
-IndexError: list index out of range
-srun: error: stellar-i01n1: task 0: Exited with exit code 1
-srun: Terminating StepId=1971560.36
+/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/sim.py:209: RuntimeWarning: invalid value encountered in sqrt
+  c0_L = np.sqrt(self.gamma*P_L/rho_L)
+/home/jk9075/codes/Data-assimilation-MHD-turbulence/src/env/sim.py:212: RuntimeWarning: invalid value encountered in sqrt
+  ca_L = np.sqrt((Bx_L**2+By_L**2)/rho_L/4/np.pi)
+srun: Step created for StepId=1971760.8
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Step created for StepId=1971760.9
+srun: Step created for StepId=1971760.10
+srun: Step created for StepId=1971760.11
+srun: Step created for StepId=1971760.12
+srun: Step created for StepId=1971760.13
+srun: Step created for StepId=1971760.14
+srun: Step created for StepId=1971760.15
+srun: Step created for StepId=1971760.16
+srun: Step created for StepId=1971760.17
+srun: Step created for StepId=1971760.18
+srun: Step created for StepId=1971760.19
+srun: Step created for StepId=1971760.20
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Step created for StepId=1971760.21
+srun: Step created for StepId=1971760.22
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Job 1971760 step creation still disabled, retrying (Requested nodes are busy)
+srun: Step created for StepId=1971760.23
+srun: Step created for StepId=1971760.24
+srun: Step created for StepId=1971760.25
+srun: Step created for StepId=1971760.26
+srun: Step created for StepId=1971760.27
+srun: Step created for StepId=1971760.28
+srun: Step created for StepId=1971760.29
+srun: Step created for StepId=1971760.30
+srun: Step created for StepId=1971760.31
+srun: Step created for StepId=1971760.32
+srun: Step created for StepId=1971760.33
+srun: Step created for StepId=1971760.34
+srun: Step created for StepId=1971760.35
+srun: Step created for StepId=1971760.36
+srun: Step created for StepId=1971760.37
+srun: Step created for StepId=1971760.38
+srun: Step created for StepId=1971760.39

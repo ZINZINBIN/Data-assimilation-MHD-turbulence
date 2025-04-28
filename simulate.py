@@ -38,7 +38,8 @@ if __name__ == "__main__":
         savedir=args["savedir"],
         plot_freq=args["plot_freq"],
         courant_factor=args["courant_factor"],
-        plot_all=args['plot_all']
+        plot_all=args['plot_all'],
+        use_smooth=False
     )
     sim.solve()
 
