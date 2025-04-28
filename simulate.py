@@ -1,6 +1,7 @@
 import argparse, os
 import numpy as np
 from src.env.sim import Simulation
+from src.env.util import generate_snapshots
 
 def parsing():
     parser = argparse.ArgumentParser(description="Data assimilation for estimating the dynamics of MHD turbulence")
@@ -22,10 +23,10 @@ def parsing():
 if __name__ == "__main__":
 
     args = parsing()
-    
+
     if not os.path.exists(args['savedir']):
-        os.mkdir(args['savedir'])
-        
+        os.makedirs(args['savedir'])
+
     sim = Simulation(
         nx=args["num_mesh"],
         ny=args["num_mesh"],
@@ -40,6 +41,16 @@ if __name__ == "__main__":
         plot_all=args['plot_all']
     )
     sim.solve()
+
+    if not os.path.exists("./data/simulation"):
+        os.makedirs("./data/simulation")
+
+    generate_snapshots(sim.record_rho, r"$\rho(x,y)$", args['savedir'], "rho_snapshot.png")
+    generate_snapshots(sim.record_vx, r"$v_x(x,y)$", args['savedir'], "vx_snapshot.png")
+    generate_snapshots(sim.record_vy, r"$v_y(x,y)$", args['savedir'], "vy_snapshot.png")
+    generate_snapshots(sim.record_P, r"$P(x,y)$", args['savedir'], "pressure_snapshot.png")
+    generate_snapshots(sim.record_Bx, r"$B_x(x,y)$", args['savedir'], "Bx_snapshot.png")
+    generate_snapshots(sim.record_By, r"$B_y(x,y)$", args['savedir'], "By_snapshot.png")
 
     # save the results for analysis
     np.save("./data/simulation/Ez.npy", sim.Ez)

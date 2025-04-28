@@ -35,8 +35,7 @@ class EnsembleKalmanFilter:
         self.K = np.zeros((xdim, zdim), dtype = np.float32) # Kalman gain matrix
         self.S = np.zeros((zdim, zdim), dtype = np.float32) # Innovation covariance
         
-        self.ensemble_x = self.compute_diag_mvn_sample(x.reshape(-1,1), diag_cov=self.P, size = N)
-        # self.ensemble_x = x.reshape(-1,1).repeat(N, axis = 1)    
+        self.ensemble_x = self.compute_diag_mvn_sample(x.reshape(-1,1), diag_cov=self.P, size = N) 
         self.ensemble_z = np.zeros((zdim, N), dtype = np.float32)            # (zdim, N)
 
         self._mean_x = np.zeros(xdim)

@@ -2,7 +2,7 @@ import argparse, os
 import numpy as np
 import matplotlib.pyplot as plt
 from src.env.sim import Simulation
-from src.env.util import generate_comparison_gif, generate_contourf_gif
+from src.env.util import generate_comparison_gif, generate_contourf_gif, generate_snapshots, generate_comparison_snapshot
 from src.EnKF.util import generate_observation_matrix, compute_l2_norm
 from src.EnKF.enkf import EnsembleKalmanFilter
 
@@ -123,9 +123,24 @@ if __name__ == "__main__":
     By_estimate = [sim_kf.By]
     t_estimate = [0]
 
+    record_rho = []
+    record_vx = []
+    record_vy = []
+    record_P = []
+    record_Bx = []
+    record_By = []
+
     print("======================================================================")
     print("# Ensemble Kalman Filter Application for Constraint Transport Solver")
     while t < t_end:
+
+        # record physical variables
+        record_rho.append(np.copy(sim_kf.rho))
+        record_vx.append(np.copy(sim_kf.vx))
+        record_vy.append(np.copy(sim_kf.vy))
+        record_P.append(np.copy(sim_kf.P))
+        record_Bx.append(np.copy(sim_kf.Bx))
+        record_By.append(np.copy(sim_kf.By))
 
         # Save prior state
         Bx_prev = enkf_Bx.x.reshape(args["num_mesh"], args["num_mesh"])
@@ -179,6 +194,16 @@ if __name__ == "__main__":
 
     generate_contourf_gif(Bx_estimate,savepath, "Bx_evolution_estimate.gif", r"$B_x (x,y)$", 0, args['L'], args['plot_freq'])
     generate_contourf_gif(By_estimate,savepath, "By_evolution_estimate.gif", r"$B_y (x,y)$", 0, args['L'], args['plot_freq'])
+
+    generate_snapshots(record_rho, r"$\rho(x,y)$", savepath, "rho_snapshot.png")
+    generate_snapshots(record_vx, r"$v_x(x,y)$", savepath, "vx_snapshot.png")
+    generate_snapshots(record_vy, r"$v_y(x,y)$", savepath, "vy_snapshot.png")
+    generate_snapshots(record_P, r"$P(x,y)$", savepath, "pressure_snapshot.png")
+    generate_snapshots(record_Bx, r"$B_x(x,y)$", savepath, "Bx_snapshot.png")
+    generate_snapshots(record_By, r"$B_y(x,y)$", savepath, "By_snapshot.png")
+    
+    generate_comparison_snapshot(Bx_measure[-1], Bx_estimate[-1], savepath, "Bx_comparison.png", r"$B_x(x,y)$ at $t = 0.5$")
+    generate_comparison_snapshot(By_measure[-1], By_estimate[-1], savepath, "By_comparison.png", r"$B_y(x,y)$ at $t = 0.5$")
 
     Bx_l2_err_t = [compute_l2_norm(Bx_measure[i], Bx_estimate[i]) for i in range(len(Bx_measure))]
     By_l2_err_t = [compute_l2_norm(By_measure[i], By_estimate[i]) for i in range(len(By_measure))]

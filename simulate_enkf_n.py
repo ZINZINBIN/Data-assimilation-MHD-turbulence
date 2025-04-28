@@ -2,7 +2,7 @@ import argparse, os
 import numpy as np
 import matplotlib.pyplot as plt
 from src.env.sim import Simulation
-from src.env.util import generate_comparison_gif, generate_contourf_gif
+from src.env.util import generate_comparison_gif, generate_contourf_gif, generate_snapshots, generate_comparison_snapshot
 from src.EnKF.util import generate_observation_matrix, compute_l2_norm
 from src.EnKF.enkf import EnsembleKalmanFilter
 
@@ -11,7 +11,7 @@ def parsing():
 
     # Simulator setup
     parser.add_argument("--num_mesh", type=int, default=50)
-    parser.add_argument("--t_end", type=float, default=0.1)
+    parser.add_argument("--t_end", type=float, default=0.5)
     parser.add_argument("--L", type=float, default=1.0)
     parser.add_argument("--courant_factor", type=float, default=0.25)
     parser.add_argument("--slopelimit", type=bool, default=True)
@@ -112,9 +112,24 @@ if __name__ == "__main__":
     rho_estimate = [sim_kf.rho]
     t_estimate = [0]
 
+    record_rho = []
+    record_vx = []
+    record_vy = []
+    record_P = []
+    record_Bx = []
+    record_By = []
+
     print("======================================================================")
     print("# Ensemble Kalman Filter Application for Constraint Transport Solver")
     while t < t_end:
+
+        # record physical variables
+        record_rho.append(np.copy(sim_kf.rho))
+        record_vx.append(np.copy(sim_kf.vx))
+        record_vy.append(np.copy(sim_kf.vy))
+        record_P.append(np.copy(sim_kf.P))
+        record_Bx.append(np.copy(sim_kf.Bx))
+        record_By.append(np.copy(sim_kf.By))
 
         # Save prior state
         x_prev = enkf.x.reshape(args["num_mesh"], args["num_mesh"])
@@ -152,6 +167,15 @@ if __name__ == "__main__":
     generate_contourf_gif(rho_measure,  savepath, "density_evolution_original.gif", r"$\rho (x,y)$", 0, args['L'], args['plot_freq'])
     generate_contourf_gif(rho_estimate, savepath, "density_evolution_estimate.gif", r"$\rho (x,y)$", 0, args['L'], args['plot_freq'])
 
+    generate_snapshots(record_rho,r"$\rho(x,y)$",savepath, "rho_snapshot.png")
+    generate_snapshots(record_vx, r"$v_x(x,y)$", savepath, "vx_snapshot.png")
+    generate_snapshots(record_vy, r"$v_y(x,y)$", savepath, "vy_snapshot.png")
+    generate_snapshots(record_P, r"$P(x,y)$",    savepath, "pressure_snapshot.png")
+    generate_snapshots(record_Bx, r"$B_x(x,y)$", savepath, "Bx_snapshot.png")
+    generate_snapshots(record_By, r"$B_y(x,y)$", savepath, "By_snapshot.png")
+
+    generate_comparison_snapshot(rho_measure[-1], rho_estimate[-1], savepath, "density_comparison.png", r"$\rho (x,y)$ at $t = 0.5$")
+
     l2_err_t = [compute_l2_norm(rho_measure[i], rho_estimate[i]) for i in range(len(rho_measure))]
 
     # Plot the L2 norm
@@ -175,10 +199,10 @@ if __name__ == "__main__":
                 args["sigma_z"],
             ),
         )
-        
+
         if not os.path.exists(datapath):
             os.makedirs(datapath)
-        
+
         t_estimate = np.array(t_estimate)
         rho_estimate = np.stack(rho_estimate, axis=2)
         rho_measure = np.stack(rho_measure, axis=2)
