@@ -16,6 +16,7 @@ def parsing():
     parser.add_argument("--courant_factor", type=float, default=0.25)
     parser.add_argument("--slopelimit", type=bool, default=True)
     parser.add_argument("--use_animation", type=bool, default=False)
+    parser.add_argument("--use_smooth", type=bool, default=False)
     parser.add_argument("--verbose", type=int, default=10)
     parser.add_argument("--plot_freq", type=int, default=10)
     parser.add_argument("--plot_all", type=bool, default=False)
@@ -73,7 +74,7 @@ if __name__ == "__main__":
         plot_freq=args["plot_freq"],
         courant_factor=args["courant_factor"],
         plot_all=args["plot_all"],
-        use_smooth=True
+        use_smooth=args['use_smooth'],
     )
 
     # Generate simulation data : ground-truth

@@ -84,7 +84,7 @@ class Simulation:
 
         # Record of MHD density distribution
         self.record = []
-        
+
         # Record primitive variables
         self.record_rho = []
         self.record_P = []
@@ -271,8 +271,8 @@ class Simulation:
             Ez = self.Ez
 
         # Check invalid values
-        rho = np.maximum(rho, 1e-8)
-        P = np.maximum(P, 1e-8)
+        rho = np.maximum(rho, 1e-2)
+        P = np.maximum(P, 1e-2)
 
         # Smoothing
         if self.use_smooth:
@@ -339,6 +339,17 @@ class Simulation:
         By_xl, By_xr, By_yl, By_yr = extrapolate_space(By_h, self.dx, By_dx, By_dy)
         P_xl, P_xr, P_yl, P_yr = extrapolate_space(P_h, self.dx, P_dx, P_dy)
 
+        # check invalid values in rho and P
+        rho_xl = np.maximum(rho_xl, 1e-2)
+        rho_xr = np.maximum(rho_xr, 1e-2)
+        rho_yl = np.maximum(rho_yl, 1e-2)
+        rho_yr = np.maximum(rho_yr, 1e-2)
+
+        P_xl = np.maximum(P_xl, 1e-2)
+        P_xr = np.maximum(P_xr, 1e-2)
+        P_yl = np.maximum(P_yl, 1e-2)
+        P_yr = np.maximum(P_yr, 1e-2)
+
         # compute conservative flux
         flux_m_x, flux_px_x, flux_py_x, flux_en_x, flux_by_x = self.compute_Rusanov_Flux(rho_xl, rho_xr, vx_xl, vx_xr, vy_xl, vy_xr, P_xl, P_xr, Bx_xl, Bx_xr, By_xl, By_xr)
         flux_m_y, flux_py_y, flux_px_y, flux_en_y, flux_bx_y = self.compute_Rusanov_Flux(rho_yl, rho_yr, vy_yl, vy_yr, vx_yl, vx_yr, P_yl, P_yr, By_yl, By_yr, Bx_yl, Bx_yr)
@@ -358,9 +369,9 @@ class Simulation:
 
         # check divergence free
         divB = compute_div(Bx, By, self.dx)
-        
+
         P = np.maximum((self.gamma - 1) * (en - 0.5 * (px**2 + py**2) / rho - 1 / 8 / np.pi * (Bx**2 + By**2)), 1e-8)
-        
+
         # update variables
         if update_params:
             self.Ez = Ez
@@ -534,7 +545,7 @@ class Simulation:
                 )
 
             self.record.append(rho)
-            
+
             self.record_rho.append(rho)
             self.record_vx.append(vx)
             self.record_vy.append(vy)
@@ -552,7 +563,12 @@ class Simulation:
             self.plot_div_B()
 
         if self.animation:
-            generate_contourf_gif(self.record, self.savedir, "density_evolution.gif", r"$\rho (x,y,t)$", xmin = 0, xmax = self.L, plot_freq = self.plot_freq)
+            generate_contourf_gif(self.record_rho, self.savedir, "density_evolution.gif", r"$\rho (x,y,t)$", xmin = 0, xmax = self.L, plot_freq = self.plot_freq)
+            generate_contourf_gif(self.record_Bx, self.savedir, "Bx_evolution.gif", r"$B_x (x,y,t)$", xmin = 0, xmax = self.L, plot_freq = self.plot_freq)
+            generate_contourf_gif(self.record_By, self.savedir, "By_evolution.gif", r"$B_y (x,y,t)$", xmin = 0, xmax = self.L, plot_freq = self.plot_freq)
+            generate_contourf_gif(self.record_P, self.savedir, "P_evolution.gif", r"$P(x,y,t)$", xmin = 0, xmax = self.L, plot_freq = self.plot_freq)
+            generate_contourf_gif(self.record_vx, self.savedir, "vx_evolution.gif", r"$v_x (x,y,t)$", xmin = 0, xmax = self.L, plot_freq = self.plot_freq)
+            generate_contourf_gif(self.record_vy, self.savedir, "vy_evolution.gif", r"$v_y (x,y,t)$", xmin = 0, xmax = self.L, plot_freq = self.plot_freq)
 
     def plot_snapshot(self, tag:Optional[str], t:float):
 

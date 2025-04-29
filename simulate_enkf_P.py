@@ -16,6 +16,7 @@ def parsing():
     parser.add_argument("--courant_factor", type=float, default=0.25)
     parser.add_argument("--slopelimit", type=bool, default=True)
     parser.add_argument("--use_animation", type=bool, default=False)
+    parser.add_argument("--use_smooth", type=bool, default=False)
     parser.add_argument("--verbose", type=int, default=10)
     parser.add_argument("--plot_freq", type=int, default=10)
     parser.add_argument("--plot_all", type=bool, default=False)
@@ -73,7 +74,7 @@ if __name__ == "__main__":
         plot_freq=args["plot_freq"],
         courant_factor=args["courant_factor"],
         plot_all=args["plot_all"],
-        use_smooth=True
+        use_smooth=args["use_smooth"],
     )
 
     # Generate simulation data : ground-truth
@@ -173,7 +174,7 @@ if __name__ == "__main__":
     generate_snapshots(record_P, r"$P(x,y)$", savepath, "pressure_snapshot.png")
     generate_snapshots(record_Bx, r"$B_x(x,y)$", savepath, "Bx_snapshot.png")
     generate_snapshots(record_By, r"$B_y(x,y)$", savepath, "By_snapshot.png")
-    
+
     generate_comparison_snapshot(P_measure[-1], P_estimate[-1], savepath, "pressure_comparison.png", r"$P(x,y)$ at $t = 0.5$")
 
     l2_err_t = [compute_l2_norm(P_measure[i], P_estimate[i]) for i in range(len(P_measure))]
